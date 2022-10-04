@@ -33,13 +33,25 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
-  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id] };
+  const id = req.params.id;
+  const longURL = urlDatabase[id];
+  if (!longURL) {
+    return res.status(404).render('404');
+  }
+  const templateVars = { id, longURL: urlDatabase[id] };
   res.render("urls_show", templateVars);
 });
 
 app.get("/u/:id", (req, res) => {
   const longURL = urlDatabase[req.params.id];
+  if (!longURL) {
+    return res.status(404).render('404');
+  }
   res.redirect(longURL);
+});
+
+app.get('/:invalidPath', (req, res) => {
+  return res.status(404).render('404');
 });
 
 //POST
