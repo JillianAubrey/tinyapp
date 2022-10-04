@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const PORT = 8080; // default port is 8080
 
+app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
 const urlDatabase = {
@@ -9,6 +10,7 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+//GET
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -35,6 +37,13 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
+//POST
+app.post("/urls", (req, res) => {
+  console.log(req.body);
+  res.send("Ok");
+});
+
+//Listen
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
