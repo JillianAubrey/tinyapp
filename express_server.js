@@ -12,11 +12,7 @@ const urlDatabase = {
 
 //GET
 app.get("/", (req, res) => {
-  res.send("Hello!");
-});
-
-app.get("/hello", (req, res) => {
-  res.send("<html><body>Hello <b>World</b></body></html>\n");
+  res.redirect('/urls');
 });
 
 app.get("/urls.json", (req, res) => {
@@ -63,7 +59,7 @@ app.post("/urls", (req, res) => {
 
 //Listen
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
+  console.log(`Tinyapp listening on port ${PORT}!`);
 });
 
 //Functions
