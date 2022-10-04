@@ -14,25 +14,32 @@
         <p class="card-text">
           Short URL ID: <a href="/u/<%= id %>"><%= id %></a>
         </p>
+      </div>
+    </div>
+    <div class="card text-center">
         <h5 class="card-title">
           Edit
         </h5>
-        <form action="/urls/<%= id %>/edit" method="POST">
-          <div class="form-group">
+        <form action="/urls/<%= id %>/edit" method="POST" class="form-inline">
+          <div class="form-group mx-auto">
             <label for="newURL">New URL:</label>
             <input
+              class="form-control"
               type="text"
               name="newURL"
               placeholder="http://"
-              style="width: 300px; margin: 1em"
+              style="width: 300px"
             />
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>
-          <form method="POST" action="/urls/<%= id %>/delete"><button class="btn btn-danger">Delete</button></form>
-      </div>
-      <div class="card-footer text-muted">
         </form>
       </div>
+    </div>
+    <div class="card text-center">
+      <div class="card-body">
+          <form method="POST" action="/urls/<%= id %>/delete"><button class="btn btn-outline-danger">Delete</button></form>
+      </div>
+      <div class="card-footer text-muted"></div>
     </div>
     <%- include('partials/_bootstrapJS') %>
   </body>
