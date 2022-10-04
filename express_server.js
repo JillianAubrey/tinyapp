@@ -57,6 +57,12 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${id}`);
 });
 
+app.post("/urls/:id/delete", (req, res) => {
+  const id = req.params.id;
+  delete urlDatabase[id];
+  res.redirect('/urls');
+});
+
 //Listen
 app.listen(PORT, () => {
   console.log(`Tinyapp listening on port ${PORT}!`);
