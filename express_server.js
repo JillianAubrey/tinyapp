@@ -3,6 +3,7 @@ const app = express();
 const PORT = 8080; // default port is 8080
 
 app.use(express.urlencoded({ extended: true }));
+//app.use(cookieParser());
 app.set("view engine", "ejs");
 
 const urlDatabase = {
@@ -58,15 +59,21 @@ app.post("/urls", (req, res) => {
 });
 
 app.post("/urls/:id/delete", (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
   delete urlDatabase[id];
   res.redirect('/urls');
 });
 
 app.post("/urls/:id/edit", (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
   urlDatabase[id] = req.body.newURL;
   res.redirect(`/urls/${id}`);
+});
+
+app.post("/login", (req, res) => {
+  const { username } = req.body;
+  res.cookie('username', { username });
+  res.redirect('/urls');
 });
 
 //Listen
