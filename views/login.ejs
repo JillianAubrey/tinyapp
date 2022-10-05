@@ -10,9 +10,10 @@
     <div class="card text-center">
       <div class="card-header"></div>
       <div class="card-body">
-        <h5 class="card-title"></h5>
-        <p class="card-text">
-        </p>
+        <h5 class="card-title">Login</h5>
+        <% if (message) { %>
+          <p class="card-text"><%= message %></p>
+        <% } %>
         <form action="/login" method="POST">
           <div class="form-group">
             <input
@@ -32,8 +33,8 @@
             <button type="submit" class="btn btn-primary">Login</button>
           </div>
         </form>
+      </div>
       <div class="card-footer text-muted"></div>
-    </div>
     <%- include('partials/_bootstrapJS') %>
   </body>
 </html>
