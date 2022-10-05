@@ -124,16 +124,14 @@ app.post("/register", (req, res) => {
       user: null,
       message: 'Please provide an email and password',
     }
-    return res.render('register', templateVars);
+    return res.status(400).render('register', templateVars);
   }
-  for (const id in users) {
-    if (users[id].email === email) {
-      const templateVars = {
-        user: null,
-        message: 'There is already an account with that email address',
-      }
-      return res.render('register', templateVars);
+  if (getUserByEmail(email)) {
+    const templateVars = {
+      user: null,
+      message: 'There is already an account with that email address',
     }
+    return res.status(400).render('register', templateVars);
   }
   users[id] =  { id, email, password };
   res.cookie('user_id', id);
@@ -165,3 +163,12 @@ const generateRandomString = function(len) {
 const randomBetween = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
+
+const getUserByEmail = function (email) {
+  for (const id in users) {
+    if (users[id].email === email) {
+      return users[id];
+    }
+  }
+  return null;
+}
