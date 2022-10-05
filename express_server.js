@@ -30,7 +30,10 @@ app.get('/urls', (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  const templateVars = { 
+    username: req.cookies["username"],
+  };
+  res.render("urls_new", templateVars);
 });
 
 app.get("/urls/:id", (req, res) => {
@@ -54,6 +57,14 @@ app.get("/u/:id", (req, res) => {
   }
   res.redirect(longURL);
 });
+
+app.get("/register", (req, res) => {
+  const templateVars = { 
+    username: req.cookies["username"],
+  };
+  res.render("register", templateVars);
+});
+
 
 app.get('/:invalidPath', (req, res) => {
   return res.status(404).render('404');
