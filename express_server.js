@@ -82,6 +82,16 @@ app.get("/register", (req, res) => {
   res.render("register", templateVars);
 });
 
+app.get("/login", (req, res) => {
+  const templateVars = { 
+    user: users[req.cookies["user_id"]],
+    message: '',
+  };
+  if (templateVars.user) {
+    return res.redirect('/');
+  }
+  res.render("login", templateVars);
+});
 
 app.get('/:invalidPath', (req, res) => {
   return res.status(404).render('404');
