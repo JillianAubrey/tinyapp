@@ -74,7 +74,7 @@ app.get("/u/:id", (req, res) => {
 app.get("/register", (req, res) => {
   const templateVars = { 
     user: users[req.cookies["user_id"]],
-    message: '',
+    errorMessage: '',
   };
   if (templateVars.user) {
     return res.redirect('/');
@@ -85,7 +85,7 @@ app.get("/register", (req, res) => {
 app.get("/login", (req, res) => {
   const templateVars = { 
     user: users[req.cookies["user_id"]],
-    message: '',
+    errorMessage: '',
   };
   if (templateVars.user) {
     return res.redirect('/');
@@ -121,7 +121,7 @@ app.post("/login", (req, res) => {
   if (!email || !password) {
     const templateVars = {
       user: null,
-      message: 'Please provide an email and password',
+      errorMessage: 'Please provide an email and password',
     }
     return res.status(400).render('login', templateVars);
   }
@@ -129,7 +129,7 @@ app.post("/login", (req, res) => {
   if(!user || user.password !== password) {
     const templateVars = {
       user: null,
-      message: 'That email and password combination did not match any accounts',
+      errorMessage: 'That email and password combination did not match any accounts',
     }
     return res.status(400).render('login', templateVars);
   }
@@ -147,14 +147,14 @@ app.post("/register", (req, res) => {
   if (!email || !password) {
     const templateVars = {
       user: null,
-      message: 'Please provide an email and password',
+      errorMessage: 'Please provide an email and password',
     }
     return res.status(400).render('register', templateVars);
   }
   if (getUserByEmail(email)) {
     const templateVars = {
       user: null,
-      message: 'There is already an account with that email address',
+      errorMessage: 'There is already an account with that email address',
     }
     return res.status(400).render('register', templateVars);
   }

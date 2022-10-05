@@ -11,8 +11,8 @@
       <div class="card-header"></div>
       <div class="card-body">
         <h5 class="card-title">Create a New Account</h5>
-        <% if (message) { %>
-          <p class="card-text"><%= message %></p>
+        <% if (errorMessage) { %>
+          <p class="card-text text-danger"><%= errorMessage %></p>
         <% } %>
         <form action="/register" method="POST">
           <div class="form-group">

@@ -11,8 +11,8 @@
       <div class="card-header"></div>
       <div class="card-body">
         <h5 class="card-title">Login</h5>
-        <% if (message) { %>
-          <p class="card-text"><%= message %></p>
+        <% if (errorMessage) { %>
+          <p class="card-text text-danger"><%= errorMessage %></p>
         <% } %>
         <form action="/login" method="POST">
           <div class="form-group">
