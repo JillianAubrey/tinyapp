@@ -196,18 +196,13 @@ app.listen(PORT, () => {
 
 //Functions
 const generateRandomString = function(len) {
-  let charCodes = [];
-  do {
-    //48 is charCode for 0 and 122 is z
-    const randNum = randomBetween(48, 122);
-    //ignores codes in the gaps between alphanumeric characters
-    if ((randNum > 57 && randNum < 65) || (randNum > 90 && randNum < 97)) {
-      continue;
-    }
-    charCodes.push(randNum);
-  } while (charCodes.length < len);
-
-  return String.fromCharCode(...charCodes);
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let randStr = '';
+  for (let i = 0; i < len; i ++) {
+    const randNum = randomBetween(0, chars.length - 1);
+    randStr += chars[randNum];
+  }
+  return randStr;
 };
 
 const randomBetween = function(min, max) {
