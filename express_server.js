@@ -12,6 +12,19 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+const users = {
+  xjJM8f: {
+    id: 'xjJM8f',
+    email: 'user1@exampledomain.com',
+    password: 'test-password-1',
+  },
+  sNgHlb: {
+    id: 'sNgHlb',
+    email: 'user2@exampledomain.com',
+    password: 'test-password-2',
+  }
+}
+
 //GET
 app.get("/", (req, res) => {
   res.redirect('/urls');
@@ -123,3 +136,6 @@ const generateRandomString = function(len) {
 const randomBetween = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
+
+console.log(generateRandomString(6));
+console.log(generateRandomString(6));
