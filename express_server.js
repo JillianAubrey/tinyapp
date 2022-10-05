@@ -126,6 +126,15 @@ app.post("/register", (req, res) => {
     }
     return res.render('register', templateVars);
   }
+  for (const id in users) {
+    if (users[id].email === email) {
+      const templateVars = {
+        user: null,
+        message: 'There is already an account with that email address',
+      }
+      return res.render('register', templateVars);
+    }
+  }
   users[id] =  { id, email, password };
   res.cookie('user_id', id);
   res.redirect('/urls');
