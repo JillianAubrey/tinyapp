@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('partials/_bootstrapCSS') %>
+    <title>Login</title>
+  </head>
+
+  <body>
+    <%- include('partials/_header') %>
+    <div class="card text-center">
+      <div class="card-header"></div>
+      <div class="card-body">
+        <h5 class="card-title"></h5>
+        <p class="card-text">
+        </p>
+        <form action="/login" method="POST">
+          <div class="form-group">
+            <input
+              class="form-control mx-auto"
+              type="text"
+              name="email"
+              placeholder="Email"
+              style="width: 300px; margin: 5px"
+            />
+            <input
+              class="form-control mx-auto"
+              type="password"
+              name="password"
+              placeholder="Password"
+              style="width: 300px; margin: 5px"
+            />
+            <button type="submit" class="btn btn-primary">Login</button>
+          </div>
+        </form>
+      <div class="card-footer text-muted"></div>
+    </div>
+    <%- include('partials/_bootstrapJS') %>
+  </body>
+</html>
