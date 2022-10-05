@@ -106,7 +106,7 @@ app.get('/:invalidPath', (req, res) => {
 app.post("/urls", (req, res) => {
   const user = users[req.cookies["user_id"]];
   if (!user) {
-    return res.end('Cannot generate shortened URL without being logged in.\n');
+    return res.status(401).end('Cannot generate shortened URL without being logged in.\n');
   }
   const id = generateRandomString(6);
   urlDatabase[id] = req.body.longURL;
