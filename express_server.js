@@ -117,7 +117,22 @@ app.post("/urls/:id/edit", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  res.cookie('username', req.body.username);
+  const { email, password } = req.body;
+  if (!email || !password) {
+    const templateVars = {
+      user: null,
+      message: 'Please provide an email and password',
+    }
+    return res.status(400).render('login', templateVars);
+  }
+  const user = getUserByEmail(email);
+  if(!user || user.password !== password) {
+    const templateVars = {
+      user: null,
+      message: 'That email and password combination did not match any accounts',
+    }
+    return res.status(400).render('login', templateVars);
+  }
   res.redirect('/urls');
 });
 
@@ -127,7 +142,6 @@ app.post("/logout", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  const id = generateRandomString(6);
   const { email, password } = req.body;
   if (!email || !password) {
     const templateVars = {
@@ -143,6 +157,7 @@ app.post("/register", (req, res) => {
     }
     return res.status(400).render('register', templateVars);
   }
+  const id = generateRandomString(6);
   users[id] =  { id, email, password };
   res.cookie('user_id', id);
   res.redirect('/urls');
