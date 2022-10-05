@@ -74,7 +74,11 @@ app.get("/u/:id", (req, res) => {
 app.get("/register", (req, res) => {
   const templateVars = { 
     user: users[req.cookies["user_id"]],
+    message: '',
   };
+  if (templateVars.user) {
+    return res.redirect('/');
+  }
   res.render("register", templateVars);
 });
 
