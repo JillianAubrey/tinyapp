@@ -19,8 +19,13 @@
       </div>
     </div>
     <%if (username) { %>
-      <p><%= username %></p>
-    <% } %>
+      <form class="form-inline" action="/logout" method="POST">
+        <div class="form-group mb-2">
+          <label style="margin: 5px">Logged in as <%= username %>!</label>
+          <button type="submit" class="btn btn-light">Logout</button>
+        </div>
+      </form>
+    <% } else { %>
     <form class="form-inline" action="/login" method="POST">
       <div class="form-group mb-2">
         <input
@@ -30,8 +35,9 @@
           placeholder="username"
           style="width: 300px; margin: 5px"
         />
-        <button type="submit" class="btn btn-light">Log In</button>
+        <button type="submit" class="btn btn-light">Login</button>
       </div>
     </form>
+    <% } %>
   </nav>
 </header>
