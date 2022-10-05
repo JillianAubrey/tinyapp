@@ -112,6 +112,14 @@ app.post("/logout", (req, res) => {
   res.redirect('/urls');
 });
 
+app.post("/register", (req, res) => {
+  const id = generateRandomString(6);
+  const { email, password } = req.body;
+  users[id] =  { id, email, password };
+  res.redirect('/urls');
+});
+
+
 //Listen
 app.listen(PORT, () => {
   console.log(`Tinyapp listening on port ${PORT}!`);
@@ -136,6 +144,3 @@ const generateRandomString = function(len) {
 const randomBetween = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
-
-console.log(generateRandomString(6));
-console.log(generateRandomString(6));
