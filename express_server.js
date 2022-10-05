@@ -119,6 +119,13 @@ app.post("/logout", (req, res) => {
 app.post("/register", (req, res) => {
   const id = generateRandomString(6);
   const { email, password } = req.body;
+  if (!email || !password) {
+    const templateVars = {
+      user: null,
+      message: 'Please provide an email and password',
+    }
+    return res.render('register', templateVars);
+  }
   users[id] =  { id, email, password };
   res.cookie('user_id', id);
   res.redirect('/urls');
