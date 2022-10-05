@@ -11,8 +11,9 @@
       <div class="card-header"></div>
       <div class="card-body">
         <h5 class="card-title"></h5>
-        <p class="card-text">
-        </p>
+        <% if (message) { %>
+          <p class="card-text"><%= message %></p>
+        <% } %>
         <form action="/register" method="POST">
           <div class="form-group">
             <input
@@ -32,7 +33,6 @@
             <button type="submit" class="btn btn-primary">Register</button>
           </div>
         </form>
-      <div class="card-footer text-muted"></div>
     </div>
     <%- include('partials/_bootstrapJS') %>
   </body>
