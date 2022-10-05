@@ -133,6 +133,7 @@ app.post("/login", (req, res) => {
     }
     return res.status(400).render('login', templateVars);
   }
+  res.cookie('user_id', user.id);
   res.redirect('/urls');
 });
 
