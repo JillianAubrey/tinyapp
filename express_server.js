@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
 const PORT = 8080; // default port is 8080
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const { response } = require("express");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -43,9 +44,13 @@ app.get('/urls', (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
+  const user = users[req.cookies["user_id"]];
   const templateVars = { 
-    user: users[req.cookies["user_id"]],
+    user,
   };
+  if (!user) {
+    return res.redirect('/login');
+  }
   res.render("urls_new", templateVars);
 });
 
@@ -99,6 +104,10 @@ app.get('/:invalidPath', (req, res) => {
 
 //POST
 app.post("/urls", (req, res) => {
+  const user = users[req.cookies["user_id"]];
+  if (!user) {
+    return res.end('Cannot generate shortened URL without being logged in.\n');
+  }
   const id = generateRandomString(6);
   urlDatabase[id] = req.body.longURL;
   res.redirect(`/urls/${id}`);
