@@ -37,7 +37,7 @@ const users = {
     email: 'user2@exampledomain.com',
     password: 'test-password-2',
   }
-}
+};
 
 //GET
 app.get('/', (req, res) => {
@@ -52,7 +52,7 @@ app.get('/urls', (req, res) => {
   const user = users[req.cookies['user_id']];
   const templateVars = {
     user,
-    urls: urlsForUser(user), 
+    urls: urlsForUser(user),
   };
   console.log(templateVars.urls);
   res.render('urls_index', templateVars);
@@ -63,7 +63,7 @@ app.get('/urls/new', (req, res) => {
   if (!user) {
     return res.redirect('/login');
   }
-  const templateVars = { 
+  const templateVars = {
     user,
   };
   res.render('urls_new', templateVars);
@@ -78,7 +78,7 @@ app.get('/urls/:id', (req, res) => {
   if (!user || urlObj.userId !== user.id) {
     return res.status(401).render('401');
   }
-  const templateVars = { 
+  const templateVars = {
     urlObj,
     user: users[req.cookies['user_id']],
   };
@@ -94,7 +94,7 @@ app.get('/u/:id', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  const templateVars = { 
+  const templateVars = {
     user: users[req.cookies['user_id']],
     errorMessage: '',
   };
@@ -105,7 +105,7 @@ app.get('/register', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  const templateVars = { 
+  const templateVars = {
     user: users[req.cookies['user_id']],
     errorMessage: '',
   };
@@ -130,7 +130,7 @@ app.post('/urls', (req, res) => {
     id,
     longURL: req.body.longURL,
     userId: user.id,
-  }
+  };
   res.redirect(`/urls/${id}`);
 });
 
@@ -139,13 +139,13 @@ app.post('/urls/:id/delete', (req, res) => {
   const url = urlDatabase[id];
   const user = users[req.cookies['user_id']];
   if (!url) {
-    res.status(404).end('That url id does not exist.\n')
+    res.status(404).end('That url id does not exist.\n');
   }
   if (!user) {
-    res.status(401).end('Cannot edit urls without being logged in.\n')
+    res.status(401).end('Cannot edit urls without being logged in.\n');
   }
   if (url.userId !== user.id) {
-    res.status(401).end('Cannot edit urls created by other accounts.\n')
+    res.status(401).end('Cannot edit urls created by other accounts.\n');
   }
   delete urlDatabase[id];
   res.redirect('/urls');
@@ -156,13 +156,13 @@ app.post('/urls/:id/edit', (req, res) => {
   const url = urlDatabase[id];
   const user = users[req.cookies['user_id']];
   if (!url) {
-    res.status(404).end('That url id does not exist.\n')
+    res.status(404).end('That url id does not exist.\n');
   }
   if (!user) {
-    res.status(401).end('Cannot edit urls without being logged in.\n')
+    res.status(401).end('Cannot edit urls without being logged in.\n');
   }
   if (url.userId !== user.id) {
-    res.status(401).end('Cannot edit urls created by other accounts.\n')
+    res.status(401).end('Cannot edit urls created by other accounts.\n');
   }
   urlDatabase[id].longURL = req.body.newURL;
   res.redirect(`/urls/${id}`);
@@ -174,15 +174,15 @@ app.post('/login', (req, res) => {
     const templateVars = {
       user: null,
       errorMessage: 'Please provide an email and password',
-    }
+    };
     return res.status(400).render('login', templateVars);
   }
   const user = getUserByEmail(email);
-  if(!user || user.password !== password) {
+  if (!user || user.password !== password) {
     const templateVars = {
       user: null,
       errorMessage: 'That email and password combination did not match any accounts',
-    }
+    };
     return res.status(400).render('login', templateVars);
   }
   res.cookie('user_id', user.id);
@@ -200,14 +200,14 @@ app.post('/register', (req, res) => {
     const templateVars = {
       user: null,
       errorMessage: 'Please provide an email and password',
-    }
+    };
     return res.status(400).render('register', templateVars);
   }
   if (getUserByEmail(email)) {
     const templateVars = {
       user: null,
       errorMessage: 'There is already an account with that email address',
-    }
+    };
     return res.status(400).render('register', templateVars);
   }
   const id = generateRandomString(6);
@@ -237,21 +237,21 @@ const randomBetween = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-const getUserByEmail = function (email) {
+const getUserByEmail = function(email) {
   for (const id in users) {
     if (users[id].email === email) {
       return users[id];
     }
   }
   return null;
-}
+};
 
-const urlsForUser = function (user) {
+const urlsForUser = function(user) {
   const userURLs = {};
   if (!user) {
     return null;
   }
-  for (urlId in urlDatabase) {
+  for (const urlId in urlDatabase) {
     if (urlDatabase[urlId].userId === user.id) {
       userURLs[urlId] = urlDatabase[urlId];
     }
@@ -260,4 +260,4 @@ const urlsForUser = function (user) {
     return null;
   }
   return userURLs;
-}
+};
