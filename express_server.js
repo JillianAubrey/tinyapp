@@ -283,12 +283,12 @@ app.post('/register', (req, res) => {
 app.put('/users/:id/promote', (req, res) => {
   const { id } = req.params;
   const user = users[req.session.user_id];
-  if(!user || !user.admin) {
+  if (!user || !user.admin) {
     res.status(401).end('Access denied.\n');
   }
   users[id].admin = true;
   res.redirect('/admin/users');
-})
+});
 
 //all users
 app.put('/urls/:id', (req, res) => {
@@ -313,7 +313,7 @@ app.put('/urls/:id', (req, res) => {
 app.delete('/users/:id', (req, res) => {
   const { id } = req.params;
   const user = users[req.session.user_id];
-  if(!user || !user.admin) {
+  if (!user || !user.admin) {
     res.status(401).end('Access denied.\n');
   }
   //deleting all urls associated with user
@@ -325,7 +325,7 @@ app.delete('/users/:id', (req, res) => {
   //deleting user
   delete users[id];
   res.redirect('/admin/users');
-})
+});
 //all users
 app.delete('/urls/:id', (req, res) => {
   const { id } = req.params;
