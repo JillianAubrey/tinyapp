@@ -65,12 +65,12 @@ class URL {
     this.id = generateRandomString(6);
     this.longURL = longURL;
     this.userId = userId;
-    this.timesUsed = 0;
+    this.timesVisited = 0;
     this.uniqueVisitors = 0;
     this.visits = [];
   }
   addVisit(visitorId) {
-    this.timesUsed++;
+    this.timesVisited++;
     if (this.firstTimeVisitor(visitorId)){
       uniqueVisitors++;
     }
