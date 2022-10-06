@@ -32,7 +32,7 @@ class URL {
   }
   addVisit(visitorId) {
     this.timesVisited++;
-    if (this.firstTimeVisitor(visitorId)) {
+    if (this._firstTimeVisitor(visitorId)) {
       this.uniqueVisitors++;
     }
     this.visits.push({
@@ -94,9 +94,8 @@ app.get('/urls.json', (req, res) => {
 
 app.get('/urls', (req, res) => {
   const user = users[req.session.user_id];
-  const userEmail = (user ? user.email : '');
   const templateVars = {
-    userEmail,
+    user,
     urls: urlsForUser(user, urlDatabase),
   };
   res.render('urls_index', templateVars);
@@ -107,9 +106,8 @@ app.get('/urls/new', (req, res) => {
   if (!user) {
     return res.redirect('/login');
   }
-  const userEmail = user.email;
   const templateVars = {
-    userEmail,
+    user,
   };
   res.render('urls_new', templateVars);
 });
@@ -124,10 +122,9 @@ app.get('/urls/:id', (req, res) => {
   if (!user || urlObj.userId !== user.id) {
     return res.status(401).render('401');
   }
-  const userEmail = user.email;
   const templateVars = {
     urlObj,
-    userEmail,
+    user,
     visitorId,
   };
   res.render('urls_show', templateVars);
@@ -154,7 +151,7 @@ app.get('/register', (req, res) => {
     return res.redirect('/');
   }
   const templateVars = {
-    userEmail: '',
+    user: '',
     errorMessage: '',
   };
   res.render('register', templateVars);
@@ -166,7 +163,7 @@ app.get('/login', (req, res) => {
     return res.redirect('/');
   }
   const templateVars = {
-    userEmail: '',
+    user: '',
     errorMessage: '',
   };
   res.render('login', templateVars);
@@ -224,7 +221,7 @@ app.post('/login', (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     const templateVars = {
-      userEmail: '',
+      user: '',
       errorMessage: 'Please provide an email and password',
     };
     return res.status(400).render('login', templateVars);
@@ -232,7 +229,7 @@ app.post('/login', (req, res) => {
   const user = getUserByEmail(email, users);
   if (!user || !bcrypt.compareSync(password, user.passwordHash)) {
     const templateVars = {
-      userEmail: '',
+      user: '',
       errorMessage: 'That email and password combination did not match any accounts',
     };
     return res.status(400).render('login', templateVars);
@@ -250,14 +247,14 @@ app.post('/register', (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     const templateVars = {
-      userEmail: '',
+      user: '',
       errorMessage: 'Please provide an email and password',
     };
     return res.status(400).render('register', templateVars);
   }
   if (getUserByEmail(email, users)) {
     const templateVars = {
-      userEmail: '',
+      user: '',
       errorMessage: 'There is already an account with that email address',
     };
     return res.status(400).render('register', templateVars);
