@@ -70,9 +70,13 @@ app.get('/urls/new', (req, res) => {
 });
 
 app.get('/urls/:id', (req, res) => {
+  const user = users[req.cookies['user_id']];
   const urlObj = urlDatabase[req.params.id];
   if (!urlObj) {
     return res.status(404).render('404');
+  }
+  if (!user || urlObj.userId !== user.id) {
+    return res.status(401).render('401');
   }
   const templateVars = { 
     urlObj,
