@@ -24,17 +24,21 @@
             </tr>
           </thead>
           <tbody>
-            <% for (let id in users) { %>
+            <% for (const id in users) { %>
               <tr>
                 <td><%= id %></a></td>
                 <td><%= users[id].email %></td>
                 <td><%= (users[id].admin === true) %></td>
                 <td>
-                <% if (!users[id].admin) { %>
-                  <form method="POST" action="/users/<%= id %>/promote?_method=PUT"><button class="btn btn-outline-primary">Promote</button></form>
-                <% } %>
+                  <% if (!users[id].admin) { %>
+                    <form method="POST" action="/users/<%= id %>/promote?_method=PUT"><button class="btn btn-outline-primary">Promote</button></form>
+                  <% } %>
                 </td>
-                <td><form method="POST" action="/users/<%= id %>?_method=DELETE"><button class="btn btn-outline-danger">Delete</button></form></td>
+                <td>
+                  <% if (id !== user.id) { %>
+                    <form method="POST" action="/users/<%= id %>?_method=DELETE"><button class="btn btn-outline-danger">Delete</button></form>
+                  <% } %>
+                  </td>
               </tr>
             <% } %>
           </tbody>
