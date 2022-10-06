@@ -63,7 +63,7 @@
                 <a> (You)</agit>
               <% } %>
             </td>
-            <td><%= visit.timeStamp.toLocaleString();  %></td>
+            <td><%= visit.timeStamp.toUTCString()  %></td>
         <% } %>
       </tbody>
     </table>
