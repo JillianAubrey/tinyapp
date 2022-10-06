@@ -13,16 +13,19 @@ const urlDatabase = {
     id: 'b2xVn2',
     longURL:'http://www.lighthouselabs.ca',
     userId: 'xjJM8f',
+    timesUsed: 0,
   },
   '9sm5xK': {
     id: '9sm5xK',
     longURL:'http://www.google.com',
     userId: 'xjJM8f',
+    timesUsed: 0,
   },
   'b6UTxQ': {
     id: 'b6UTxQ',
     longURL: "https://www.tsn.ca",
     userId: "sNgHlb",
+    timesUsed: 0,
   }
 };
 
@@ -86,10 +89,12 @@ app.get('/urls/:id', (req, res) => {
 });
 
 app.get('/u/:id', (req, res) => {
-  const { longURL } = urlDatabase[req.params.id];
-  if (!longURL) {
+  const url = urlDatabase[req.params.id]
+  if (!url) {
     return res.status(404).render('404');
   }
+  const { longURL } = url;
+  url.timesUsed ++;
   res.redirect(longURL);
 });
 
