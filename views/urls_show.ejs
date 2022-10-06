@@ -17,6 +17,9 @@
         <p class="card-text">
           Times visited: <%= urlObj.timesVisited %>
         </p>
+        <p class="card-text">
+          Unique visitors: <%= urlObj.uniqueVisitors %>
+        </p>
       </div>
     </div>
     <div class="card text-center">
@@ -44,6 +47,22 @@
       </div>
       <div class="card-footer text-muted"></div>
     </div>
+    <h3 style="margin: 1em;">Visit List</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Visitor ID</th>
+          <th scope="col">Time Stamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let visit of urlObj.visits) { %>
+          <tr>
+            <td><%= visit.visitorId %></td>
+            <td><%= visit.timeStamp;  %></td>
+        <% } %>
+      </tbody>
+    </table>
     <%- include('partials/_bootstrapJS') %>
   </body>
 </html>

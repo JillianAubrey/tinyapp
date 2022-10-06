@@ -76,7 +76,7 @@ class URL {
     }
     this.visits.push({
       visitorId,
-      timeStamp: Date.now(),
+      timeStamp: new Date(),
     })
   }
   firstTimeVisitor(visitorId) {
@@ -115,7 +115,7 @@ const users = {
     email: 'user2@exampledomain.com',
     passwordHash: '$2a$10$nGxgVREppXzWPbvsp89fKejXBwaWpxuQSJY/VyXPXy6vxwVBjJVnm',
     //test-password-2
-  }
+  },
 };
 
 //HTTP routes /////////////////////
