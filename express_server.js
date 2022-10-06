@@ -33,10 +33,10 @@ const randomBetween = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-const getUserByEmail = function(email) {
-  for (const id in users) {
-    if (users[id].email === email) {
-      return users[id];
+const getUserByEmail = function(email, database) {
+  for (const id in database) {
+    if (database[id].email === email) {
+      return database[id];
     }
   }
   return null;
