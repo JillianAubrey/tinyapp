@@ -24,18 +24,21 @@ const urlDatabase = {
     longURL:'http://www.lighthouselabs.ca',
     userId: 'xjJM8f',
     timesUsed: 0,
+    visits: [],
   },
   '9sm5xK': {
     id: '9sm5xK',
     longURL:'http://www.google.com',
     userId: 'xjJM8f',
     timesUsed: 0,
+    visits: [],
   },
   'b6UTxQ': {
     id: 'b6UTxQ',
     longURL: "https://www.tsn.ca",
     userId: "sNgHlb",
     timesUsed: 0,
+    visits: [],
   }
 };
 
@@ -154,6 +157,7 @@ app.post('/urls', (req, res) => {
     longURL: req.body.longURL,
     userId: user.id,
     timesUsed: 0,
+    visits: [],
   };
   res.redirect(`/urls/${id}`);
 });
