@@ -138,6 +138,7 @@ app.post('/urls', (req, res) => {
     id,
     longURL: req.body.longURL,
     userId: user.id,
+    timesUsed: 0,
   };
   res.redirect(`/urls/${id}`);
 });
