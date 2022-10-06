@@ -174,10 +174,10 @@ app.get('/u/:id', (req, res) => {
   if (!url) {
     return res.status(404).render('404');
   }
-  let visitor_id = users[req.session.visitor_id];
+  let visitor_id = req.session.visitor_id;
   if (!visitor_id) {
     visitor_id = generateRandomString(6);
-    req.session.visitor_id = visitor_id ;
+    req.session.visitor_id = visitor_id;
   }
   const { longURL } = url;
   url.addVisit(visitor_id);
