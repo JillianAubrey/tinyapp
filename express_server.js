@@ -87,6 +87,19 @@ const users = {
 
 //HTTP routes /////////////////////
 //GET
+//admin only
+app.get('/admin', (req, res) => {
+  const user = users[req.session.user_id];
+  if (!user || !user.admin) {
+    return res.status(401).render('401');
+  }
+  const templateVars = {
+    user,
+  };
+  res.render('admin_index', templateVars);
+});
+
+//any user
 app.get('/', (req, res) => {
   res.redirect('/urls');
 });
