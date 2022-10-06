@@ -279,6 +279,18 @@ app.post('/register', (req, res) => {
 });
 
 //PUT
+//admin-only
+app.put('/users/:id/promote', (req, res) => {
+  const { id } = req.params;
+  const user = users[req.session.user_id];
+  if(!user || !user.admin) {
+    res.status(401).end('Access denied.\n');
+  }
+  users[id].admin = true;
+  res.redirect('/admin/users');
+})
+
+//all users
 app.put('/urls/:id', (req, res) => {
   const { id } = req.params;
   const url = urlDatabase[id];
