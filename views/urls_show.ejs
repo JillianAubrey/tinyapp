@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <%- include('partials/_bootstrapCSS') %>
-    <title>URL - <%= urlObj.id %></title>
+    <title>URL - <%= url.id %></title>
   </head>
 
   <body>
@@ -10,15 +10,15 @@
     <div class="card text-center">
       <div class="card-header"></div>
       <div class="card-body">
-        <h5 class="card-title">TinyURL for: <a href="<%= urlObj.longURL %>"><%= urlObj.longURL %></a></h5>
+        <h5 class="card-title">TinyURL for: <a href="<%= url.longURL %>"><%= url.longURL %></a></h5>
         <p class="card-text">
-          Short URL ID: <a href="/u/<%= urlObj.id %>"><%= urlObj.id %></a>
+          Short URL ID: <a href="/u/<%= url.id %>"><%= url.id %></a>
         </p>
         <p class="card-text">
-          Times visited: <%= urlObj.timesVisited %>
+          Times visited: <%= url.timesVisited %>
         </p>
         <p class="card-text">
-          Unique visitors: <%= urlObj.uniqueVisitors %>
+          Unique visitors: <%= url.uniqueVisitors %>
         </p>
       </div>
     </div>
@@ -26,7 +26,7 @@
         <h5 class="card-title">
           Edit
         </h5>
-        <form action="/urls/<%= urlObj.id %>/edit" method="POST" class="form-inline">
+        <form action="/urls/<%= url.id %>/edit" method="POST" class="form-inline">
           <div class="form-group mx-auto">
             <label for="newURL">New URL:</label>
             <input
@@ -43,7 +43,7 @@
     </div>
     <div class="card text-center">
       <div class="card-body">
-          <form method="POST" action="/urls/<%= urlObj.id %>/delete"><button class="btn btn-danger">Delete</button></form>
+          <form method="POST" action="/urls/<%= url.id %>/delete"><button class="btn btn-danger">Delete</button></form>
       </div>
       <div class="card-footer text-muted"></div>
     </div>
@@ -56,7 +56,7 @@
         </tr>
       </thead>
       <tbody>
-        <% for (const visit of urlObj.visits) { %>
+        <% for (const visit of url.visits) { %>
           <tr>
             <td><%= visit.visitorId %>
               <% if (visit.visitorId === visitorId) { %>
