@@ -22,6 +22,9 @@
           <thead>
             <tr>
               <th scope="col">Short URL ID</th>
+              <% if (user.admin) { %>
+                <th scope="col">Owner userID</th>
+              <% } %>
               <th scope="col">Long URL</th>
               <th scope="col">Times Visited</th>
               <th scope="col">Unique Visitors</th>
@@ -33,6 +36,9 @@
             <% for (let id in urls) { %>
               <tr>
                 <td><a href="/urls/<%= id %>"><%= id %></a></td>
+                <% if (user.admin) { %>
+                  <th scope="col"><%= urls[id].userId %></th>
+                <% } %>
                 <td><a href="<%= urls[id].longURL %>"><%= urls[id].longURL %></a></td>
                 <td><%= urls[id].timesVisited %></td>
                 <td><%= urls[id].uniqueVisitors %></td>
