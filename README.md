@@ -4,8 +4,9 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## Final Product
 
-!["Create, delete and edit shortened urls!"](#)
-!["Keep track of who's been visiting the links you've made."](#)
+!["Screenshot of urls index."](https://github.com/JillianAubrey/tinyapp/blob/master/docs/Screenshot%20from%202022-10-06%2013-15-32.png?raw=true)
+
+!["Screenshot of individual url view"](https://github.com/JillianAubrey/tinyapp/blob/master/docs/Screenshot%20from%202022-10-06%2013-14-25.png?raw=true)
 
 ## Dependencies
 
