@@ -217,3 +217,16 @@ const getUserByEmail = function (email) {
   }
   return null;
 }
+
+const urlsForUser = function (userId) {
+  const userURLs = {};
+  for (urlId in urlDatabase) {
+    if (urlDatabase[urlId].userId === userId) {
+      userURLs[urlId] = urlDatabase[urlId];
+    }
+  }
+  if (Object.keys(userURLs).length === 0) {
+    return null;
+  }
+  return userURLs;
+}
