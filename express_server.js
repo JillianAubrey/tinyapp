@@ -3,7 +3,7 @@ const app = express();
 const PORT = 8080; // default port is 8080
 const cookieSession = require('cookie-session');
 const { response } = require('express');
-const bcrypt = require("bcryptjs");
+const bcrypt = require('bcryptjs');
 const { generateRandomString, getUserByEmail, urlsForUser } = require('./helpers');
 
 app.use(express.urlencoded({ extended: true }));
@@ -32,15 +32,15 @@ class URL {
   }
   addVisit(visitorId) {
     this.timesVisited++;
-    if (this.firstTimeVisitor(visitorId)){
+    if (this.firstTimeVisitor(visitorId)) {
       this.uniqueVisitors++;
     }
     this.visits.push({
       visitorId,
       timeStamp: new Date(),
-    })
+    });
   }
-  firstTimeVisitor(visitorId) {
+  _firstTimeVisitor(visitorId) {
     for (const visit of this.visits) {
       if (visitorId === visit.visitorId) {
         return false;
@@ -58,7 +58,7 @@ const urlDatabase = {
   }
 };
 
-//Populating urlDatabase
+//Populating urlDatabase with testing URLs
 urlDatabase.addURL('http://www.lighthouselabs.ca', 'xjJM8f');
 urlDatabase.addURL('http://www.google.com', 'sNgHlb');
 urlDatabase.addURL('https://www.tsn.ca', 'xjJM8f');
@@ -93,7 +93,7 @@ app.get('/urls.json', (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
-  const user = users[req.session.user_id]
+  const user = users[req.session.user_id];
   const userEmail = (user ? user.email : '');
   const templateVars = {
     userEmail,
@@ -182,7 +182,7 @@ app.post('/urls', (req, res) => {
   if (!user) {
     return res.status(401).end('Cannot generate shortened URL without being logged in.\n');
   }
-  const url = urlDatabase.addURL(req.body.longURL, user.id)
+  const url = urlDatabase.addURL(req.body.longURL, user.id);
   res.redirect(`/urls/${url.id}`);
 });
 
