@@ -60,7 +60,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/urls.json', (req, res) => {
-  const user = users[req.cookies['user_id']];
+  const user = users[req.session.user_id];
   if (!user) {
     return res.status(401).end('Must be logged in to view urls.');
   }
@@ -69,7 +69,7 @@ app.get('/urls.json', (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
-  const user = users[req.cookies['user_id']];
+  const user = users[req.session.user_id];
   const templateVars = {
     user,
     urls: urlsForUser(user),
@@ -79,7 +79,7 @@ app.get('/urls', (req, res) => {
 });
 
 app.get('/urls/new', (req, res) => {
-  const user = users[req.cookies['user_id']];
+  const user = users[req.session.user_id];
   if (!user) {
     return res.redirect('/login');
   }
@@ -90,7 +90,7 @@ app.get('/urls/new', (req, res) => {
 });
 
 app.get('/urls/:id', (req, res) => {
-  const user = users[req.cookies['user_id']];
+  const user = users[req.session.user_id];
   const urlObj = urlDatabase[req.params.id];
   if (!urlObj) {
     return res.status(404).render('404');
@@ -100,7 +100,7 @@ app.get('/urls/:id', (req, res) => {
   }
   const templateVars = {
     urlObj,
-    user: users[req.cookies['user_id']],
+    user: users[req.session.user_id],
   };
   res.render('urls_show', templateVars);
 });
@@ -118,7 +118,7 @@ app.get('/u/:id', (req, res) => {
 
 app.get('/register', (req, res) => {
   const templateVars = {
-    user: users[req.cookies['user_id']],
+    user: users[req.session.user_id],
     errorMessage: '',
   };
   if (templateVars.user) {
@@ -129,7 +129,7 @@ app.get('/register', (req, res) => {
 
 app.get('/login', (req, res) => {
   const templateVars = {
-    user: users[req.cookies['user_id']],
+    user: users[req.session.user_id],
     errorMessage: '',
   };
   if (templateVars.user) {
@@ -144,7 +144,7 @@ app.get('/:invalidPath', (req, res) => {
 
 //POST
 app.post('/urls', (req, res) => {
-  const user = users[req.cookies['user_id']];
+  const user = users[req.session.user_id];
   if (!user) {
     return res.status(401).end('Cannot generate shortened URL without being logged in.\n');
   }
@@ -161,7 +161,7 @@ app.post('/urls', (req, res) => {
 app.post('/urls/:id/delete', (req, res) => {
   const { id } = req.params;
   const url = urlDatabase[id];
-  const user = users[req.cookies['user_id']];
+  const user = users[req.session.user_id];
   if (!url) {
     res.status(404).end('That url id does not exist.\n');
   }
@@ -178,7 +178,7 @@ app.post('/urls/:id/delete', (req, res) => {
 app.post('/urls/:id/edit', (req, res) => {
   const { id } = req.params;
   const url = urlDatabase[id];
-  const user = users[req.cookies['user_id']];
+  const user = users[req.session.user_id];
   if (!url) {
     res.status(404).end('That url id does not exist.\n');
   }
@@ -209,12 +209,12 @@ app.post('/login', (req, res) => {
     };
     return res.status(400).render('login', templateVars);
   }
-  res.cookie('user_id', user.id);
+  req.session.user_id = user.id;
   res.redirect('/urls');
 });
 
 app.post('/logout', (req, res) => {
-  res.clearCookie('user_id');
+  req.session.user_id = null;
   res.redirect('/urls');
 });
 
@@ -237,7 +237,7 @@ app.post('/register', (req, res) => {
   const passwordHash = bcrypt.hashSync(password, 10);
   const id = generateRandomString(6);
   users[id] =  { id, email, passwordHash };
-  res.cookie('user_id', id);
+  req.session.user_id = id;
   res.redirect('/urls');
   console.log(users);
 });
