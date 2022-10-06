@@ -52,7 +52,7 @@ app.get('/urls', (req, res) => {
   const user = users[req.cookies['user_id']];
   const templateVars = {
     user,
-    urls: urlsForUser(user.id), 
+    urls: urlsForUser(user), 
   };
   console.log(templateVars.urls);
   res.render('urls_index', templateVars);
@@ -220,13 +220,13 @@ const getUserByEmail = function (email) {
   return null;
 }
 
-const urlsForUser = function (userId) {
+const urlsForUser = function (user) {
   const userURLs = {};
-  if (!userId) {
+  if (!user) {
     return null;
   }
   for (urlId in urlDatabase) {
-    if (urlDatabase[urlId].userId === userId) {
+    if (urlDatabase[urlId].userId === user.id) {
       userURLs[urlId] = urlDatabase[urlId];
     }
   }
