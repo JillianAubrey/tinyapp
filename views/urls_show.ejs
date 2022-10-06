@@ -56,9 +56,13 @@
         </tr>
       </thead>
       <tbody>
-        <% for (let visit of urlObj.visits) { %>
+        <% for (const visit of urlObj.visits) { %>
           <tr>
-            <td><%= visit.visitorId %></td>
+            <td><%= visit.visitorId %>
+              <% if (visit.visitorId === visitorId) { %>
+                <a> (You)</a>
+              <% } %>
+            </td>
             <td><%= visit.timeStamp;  %></td>
         <% } %>
       </tbody>
