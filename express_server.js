@@ -113,15 +113,15 @@ app.get('/urls/new', (req, res) => {
 });
 
 app.get('/urls/:id', (req, res) => {
-  const user = users[req.session.user_id];
   const urlObj = urlDatabase[req.params.id];
-  const visitorId = req.session.visitor_id;
   if (!urlObj) {
     return res.status(404).render('404');
   }
+  const user = users[req.session.user_id];
   if (!user || urlObj.userId !== user.id) {
     return res.status(401).render('401');
   }
+  const visitorId = req.session.visitor_id;
   const templateVars = {
     urlObj,
     user,
