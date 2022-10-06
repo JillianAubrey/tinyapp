@@ -26,7 +26,7 @@
         <h5 class="card-title">
           Edit
         </h5>
-        <form action="/urls/<%= url.id %>/edit" method="POST" class="form-inline">
+        <form action="/urls/<%= url.id %>?_method=PUT" method="POST" class="form-inline">
           <div class="form-group mx-auto">
             <label for="newURL">New URL:</label>
             <input
@@ -43,7 +43,7 @@
     </div>
     <div class="card text-center">
       <div class="card-body">
-          <form method="POST" action="/urls/<%= url.id %>/delete"><button class="btn btn-danger">Delete</button></form>
+          <form method="POST" action="/urls/<%= url.id %>?_method=DELETE"><button class="btn btn-danger">Delete</button></form>
       </div>
       <div class="card-footer text-muted"></div>
     </div>

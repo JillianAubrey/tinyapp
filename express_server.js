@@ -4,8 +4,10 @@ const PORT = 8080; // default port is 8080
 const cookieSession = require('cookie-session');
 const { response } = require('express');
 const bcrypt = require('bcryptjs');
+const methodOverride = require('method-override');
 const { generateRandomString, getUserByEmail, urlsForUser } = require('./helpers');
 
+app.use(methodOverride('_method'));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieSession({
   keys: [
@@ -183,40 +185,6 @@ app.post('/urls', (req, res) => {
   res.redirect(`/urls/${url.id}`);
 });
 
-app.post('/urls/:id/delete', (req, res) => {
-  const { id } = req.params;
-  const url = urlDatabase[id];
-  const user = users[req.session.user_id];
-  if (!url) {
-    res.status(404).end('That url id does not exist.\n');
-  }
-  if (!user) {
-    res.status(401).end('Cannot edit urls without being logged in.\n');
-  }
-  if (url.userId !== user.id) {
-    res.status(401).end('Cannot edit urls created by other accounts.\n');
-  }
-  delete urlDatabase[id];
-  res.redirect('/urls');
-});
-
-app.post('/urls/:id/edit', (req, res) => {
-  const { id } = req.params;
-  const url = urlDatabase[id];
-  const user = users[req.session.user_id];
-  if (!url) {
-    res.status(404).end('That url id does not exist.\n');
-  }
-  if (!user) {
-    res.status(401).end('Cannot edit urls without being logged in.\n');
-  }
-  if (url.userId !== user.id) {
-    res.status(401).end('Cannot edit urls created by other accounts.\n');
-  }
-  urlDatabase[id].longURL = req.body.newURL;
-  res.redirect(`/urls/${id}`);
-});
-
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -266,6 +234,41 @@ app.post('/register', (req, res) => {
   res.redirect('/urls');
 });
 
+//PUT
+app.put('/urls/:id', (req, res) => {
+  const { id } = req.params;
+  const url = urlDatabase[id];
+  const user = users[req.session.user_id];
+  if (!url) {
+    res.status(404).end('That url id does not exist.\n');
+  }
+  if (!user) {
+    res.status(401).end('Cannot edit urls without being logged in.\n');
+  }
+  if (url.userId !== user.id) {
+    res.status(401).end('Cannot edit urls created by other accounts.\n');
+  }
+  urlDatabase[id].longURL = req.body.newURL;
+  res.redirect(`/urls/${id}`);
+});
+
+//DELETE
+app.delete('/urls/:id', (req, res) => {
+  const { id } = req.params;
+  const url = urlDatabase[id];
+  const user = users[req.session.user_id];
+  if (!url) {
+    res.status(404).end('That url id does not exist.\n');
+  }
+  if (!user) {
+    res.status(401).end('Cannot edit urls without being logged in.\n');
+  }
+  if (url.userId !== user.id) {
+    res.status(401).end('Cannot edit urls created by other accounts.\n');
+  }
+  delete urlDatabase[id];
+  res.redirect('/urls');
+});
 
 //Server Listen
 app.listen(PORT, () => {
