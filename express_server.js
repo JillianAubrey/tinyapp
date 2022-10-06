@@ -136,12 +136,34 @@ app.post('/urls', (req, res) => {
 
 app.post('/urls/:id/delete', (req, res) => {
   const { id } = req.params;
+  const url = urlDatabase[id];
+  const user = users[req.cookies['user_id']];
+  if (!url) {
+    res.status(404).end('That url id does not exist.')
+  }
+  if (!user) {
+    res.status(401).end('Cannot edit urls without being logged in.')
+  }
+  if (url.userId !== user.id) {
+    res.status(401).end('Cannot edit urls created by other accounts.')
+  }
   delete urlDatabase[id];
   res.redirect('/urls');
 });
 
 app.post('/urls/:id/edit', (req, res) => {
   const { id } = req.params;
+  const url = urlDatabase[id];
+  const user = users[req.cookies['user_id']];
+  if (!url) {
+    res.status(404).end('That url id does not exist.')
+  }
+  if (!user) {
+    res.status(401).end('Cannot edit urls without being logged in.')
+  }
+  if (url.userId !== user.id) {
+    res.status(401).end('Cannot edit urls created by other accounts.')
+  }
   urlDatabase[id].longURL = req.body.newURL;
   res.redirect(`/urls/${id}`);
 });
