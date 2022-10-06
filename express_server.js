@@ -1,12 +1,21 @@
 const express = require('express');
 const app = express();
 const PORT = 8080; // default port is 8080
-const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 const { response } = require('express');
 const bcrypt = require("bcryptjs");
 
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieSession({
+  keys: [
+    '1nL6okiCse1QDBahrghl9wRNdyZUflcK4U2p4E6OHRrRfib2de',
+    'uFq5eh8UnUv5gUgAZS3ghXxgjzxWu4CG77KUBXUBbPc6on4zVM',
+    'cvcNRUVNnPdILZBPvaHpp5t8Os7Ju5b9FlkkgL3AUporbMgOSl',
+    'TJY6rwxSqVEb45rlmj9kHReQQV9Spb9yQ6ciHjCFzjwLMcVL2T',
+    'nhjIeKnZftLedWc9K2OARpR7sgILSBwSuyk3F2avYAqRYF68wj',
+    'kxwtS5uShNwMFxEd7YEZopWkeYBBV2DURHMBFQSkIAN30W0eKq',
+  ]
+}));
 app.set('view engine', 'ejs');
 
 const urlDatabase = {
@@ -97,6 +106,7 @@ app.get('/urls/:id', (req, res) => {
 });
 
 app.get('/u/:id', (req, res) => {
+  req.session.visitor_id = "some value";
   const url = urlDatabase[req.params.id];
   if (!url) {
     return res.status(404).render('404');
@@ -277,5 +287,3 @@ const urlsForUser = function(user) {
   }
   return userURLs;
 };
-
-console.log(users);
