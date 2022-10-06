@@ -42,14 +42,14 @@ const getUserByEmail = function(email, database) {
   return null;
 };
 
-const urlsForUser = function(user) {
+const urlsForUser = function(user, database) {
   const userURLs = {};
   if (!user) {
     return null;
   }
-  for (const urlId in urlDatabase) {
-    if (urlDatabase[urlId].userId === user.id) {
-      userURLs[urlId] = urlDatabase[urlId];
+  for (const urlId in database) {
+    if (database[urlId].userId === user.id) {
+      userURLs[urlId] = database[urlId];
     }
   }
   if (Object.keys(userURLs).length === 0) {
@@ -107,14 +107,12 @@ const users = {
   xjJM8f: {
     id: 'xjJM8f',
     email: 'user1@exampledomain.com',
-    passwordHash: '$2a$10$zuxAdN0sN81oh624QVWJY.fZrxx/daGvmdRQ8U6mt6DIRXJfV9pRK',
-    //test-password-1
+    passwordHash: bcrypt.hashSync('test-password-1', 10),
   },
   sNgHlb: {
     id: 'sNgHlb',
     email: 'user2@exampledomain.com',
-    passwordHash: '$2a$10$nGxgVREppXzWPbvsp89fKejXBwaWpxuQSJY/VyXPXy6vxwVBjJVnm',
-    //test-password-2
+    passwordHash: bcrypt.hashSync('test-password-2', 10),
   },
 };
 
@@ -129,7 +127,7 @@ app.get('/urls.json', (req, res) => {
   if (!user) {
     return res.status(401).end('Must be logged in to view urls.');
   }
-  const urls = urlsForUser(user);
+  const urls = urlsForUser(user, urlDatabase);
   res.json(urls);
 });
 
@@ -137,7 +135,7 @@ app.get('/urls', (req, res) => {
   const user = users[req.session.user_id];
   const templateVars = {
     user,
-    urls: urlsForUser(user),
+    urls: urlsForUser(user, urlDatabase),
   };
   res.render('urls_index', templateVars);
 });
@@ -263,7 +261,7 @@ app.post('/login', (req, res) => {
     };
     return res.status(400).render('login', templateVars);
   }
-  const user = getUserByEmail(email);
+  const user = getUserByEmail(email, users);
   if (!user || !bcrypt.compareSync(password, user.passwordHash)) {
     const templateVars = {
       user: null,
@@ -289,7 +287,7 @@ app.post('/register', (req, res) => {
     };
     return res.status(400).render('register', templateVars);
   }
-  if (getUserByEmail(email)) {
+  if (getUserByEmail(email, users)) {
     const templateVars = {
       user: null,
       errorMessage: 'There is already an account with that email address',
