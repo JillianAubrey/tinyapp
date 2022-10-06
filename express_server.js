@@ -112,6 +112,18 @@ app.get('/admin/urls', (req, res) => {
   res.render('urls_index', templateVars);
 });
 
+app.get('/admin/users', (req, res) => {
+  const user = users[req.session.user_id];
+  if (!user || !user.admin) {
+    return res.status(401).render('401');
+  }
+  const templateVars = {
+    user,
+    users,
+  };
+  res.render('users_index', templateVars);
+});
+
 //any user
 app.get('/', (req, res) => {
   res.redirect('/urls');
