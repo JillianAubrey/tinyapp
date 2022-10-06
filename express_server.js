@@ -49,10 +49,12 @@ app.get('/urls.json', (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
+  const user = users[req.cookies['user_id']];
   const templateVars = {
-    user: users[req.cookies['user_id']],
-    urls: urlDatabase 
+    user,
+    urls: urlsForUser(user.id), 
   };
+  console.log(templateVars.urls);
   res.render('urls_index', templateVars);
 });
 
@@ -220,6 +222,9 @@ const getUserByEmail = function (email) {
 
 const urlsForUser = function (userId) {
   const userURLs = {};
+  if (!userId) {
+    return null;
+  }
   for (urlId in urlDatabase) {
     if (urlDatabase[urlId].userId === userId) {
       userURLs[urlId] = urlDatabase[urlId];
