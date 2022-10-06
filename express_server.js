@@ -139,13 +139,13 @@ app.post('/urls/:id/delete', (req, res) => {
   const url = urlDatabase[id];
   const user = users[req.cookies['user_id']];
   if (!url) {
-    res.status(404).end('That url id does not exist.')
+    res.status(404).end('That url id does not exist.\n')
   }
   if (!user) {
-    res.status(401).end('Cannot edit urls without being logged in.')
+    res.status(401).end('Cannot edit urls without being logged in.\n')
   }
   if (url.userId !== user.id) {
-    res.status(401).end('Cannot edit urls created by other accounts.')
+    res.status(401).end('Cannot edit urls created by other accounts.\n')
   }
   delete urlDatabase[id];
   res.redirect('/urls');
@@ -156,13 +156,13 @@ app.post('/urls/:id/edit', (req, res) => {
   const url = urlDatabase[id];
   const user = users[req.cookies['user_id']];
   if (!url) {
-    res.status(404).end('That url id does not exist.')
+    res.status(404).end('That url id does not exist.\n')
   }
   if (!user) {
-    res.status(401).end('Cannot edit urls without being logged in.')
+    res.status(401).end('Cannot edit urls without being logged in.\n')
   }
   if (url.userId !== user.id) {
-    res.status(401).end('Cannot edit urls created by other accounts.')
+    res.status(401).end('Cannot edit urls created by other accounts.\n')
   }
   urlDatabase[id].longURL = req.body.newURL;
   res.redirect(`/urls/${id}`);
