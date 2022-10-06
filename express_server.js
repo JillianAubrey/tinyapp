@@ -3,6 +3,7 @@ const app = express();
 const PORT = 8080; // default port is 8080
 const cookieParser = require('cookie-parser');
 const { response } = require('express');
+const bcrypt = require("bcryptjs");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -33,12 +34,14 @@ const users = {
   xjJM8f: {
     id: 'xjJM8f',
     email: 'user1@exampledomain.com',
-    password: 'test-password-1',
+    passwordHash: '$2a$10$zuxAdN0sN81oh624QVWJY.fZrxx/daGvmdRQ8U6mt6DIRXJfV9pRK',
+    //test-password-1
   },
   sNgHlb: {
     id: 'sNgHlb',
     email: 'user2@exampledomain.com',
-    password: 'test-password-2',
+    passwordHash: '$2a$10$nGxgVREppXzWPbvsp89fKejXBwaWpxuQSJY/VyXPXy6vxwVBjJVnm',
+    //test-password-2
   }
 };
 
@@ -89,7 +92,7 @@ app.get('/urls/:id', (req, res) => {
 });
 
 app.get('/u/:id', (req, res) => {
-  const url = urlDatabase[req.params.id]
+  const url = urlDatabase[req.params.id];
   if (!url) {
     return res.status(404).render('404');
   }
@@ -183,7 +186,7 @@ app.post('/login', (req, res) => {
     return res.status(400).render('login', templateVars);
   }
   const user = getUserByEmail(email);
-  if (!user || user.password !== password) {
+  if (!user || !bcrypt.compareSync(password, user.passwordHash)) {
     const templateVars = {
       user: null,
       errorMessage: 'That email and password combination did not match any accounts',
@@ -215,10 +218,12 @@ app.post('/register', (req, res) => {
     };
     return res.status(400).render('register', templateVars);
   }
+  const passwordHash = bcrypt.hashSync(password, 10);
   const id = generateRandomString(6);
-  users[id] =  { id, email, password };
+  users[id] =  { id, email, passwordHash };
   res.cookie('user_id', id);
   res.redirect('/urls');
+  console.log(users);
 });
 
 
@@ -266,3 +271,5 @@ const urlsForUser = function(user) {
   }
   return userURLs;
 };
+
+console.log(users);
