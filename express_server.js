@@ -18,6 +18,48 @@ app.use(cookieSession({
 }));
 app.set('view engine', 'ejs');
 
+//Functions /////////
+const generateRandomString = function(len) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let randStr = '';
+  for (let i = 0; i < len; i ++) {
+    const randNum = randomBetween(0, chars.length - 1);
+    randStr += chars[randNum];
+  }
+  return randStr;
+};
+
+const randomBetween = function(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+const getUserByEmail = function(email) {
+  for (const id in users) {
+    if (users[id].email === email) {
+      return users[id];
+    }
+  }
+  return null;
+};
+
+const urlsForUser = function(user) {
+  const userURLs = {};
+  if (!user) {
+    return null;
+  }
+  for (const urlId in urlDatabase) {
+    if (urlDatabase[urlId].userId === user.id) {
+      userURLs[urlId] = urlDatabase[urlId];
+    }
+  }
+  if (Object.keys(userURLs).length === 0) {
+    return null;
+  }
+  return userURLs;
+};
+
+///URL Database///////////
+
 class URL {
   constructor(longURL, userId) {
     this.id = generateRandomString(6);
@@ -48,27 +90,6 @@ class URL {
 }
 
 const urlDatabase = {
-  'b2xVn2': {
-    id: 'b2xVn2',
-    longURL:'http://www.lighthouselabs.ca',
-    userId: 'xjJM8f',
-    timesUsed: 0,
-    visits: [],
-  },
-  '9sm5xK': {
-    id: '9sm5xK',
-    longURL:'http://www.google.com',
-    userId: 'xjJM8f',
-    timesUsed: 0,
-    visits: [],
-  },
-  'b6UTxQ': {
-    id: 'b6UTxQ',
-    longURL: "https://www.tsn.ca",
-    userId: "sNgHlb",
-    timesUsed: 0,
-    visits: [],
-  },
   addURL: function(longURL, userId) {
     const newURL = new URL(longURL, userId);
     this[newURL.id] = newURL;
@@ -76,6 +97,12 @@ const urlDatabase = {
   }
 };
 
+//Populating urlDatabase
+urlDatabase.addURL('http://www.lighthouselabs.ca', 'xjJM8f');
+urlDatabase.addURL('http://www.google.com', 'sNgHlb');
+urlDatabase.addURL('https://www.tsn.ca', 'xjJM8f');
+
+///Users database//////////
 const users = {
   xjJM8f: {
     id: 'xjJM8f',
@@ -91,6 +118,7 @@ const users = {
   }
 };
 
+//HTTP routes /////////////////////
 //GET
 app.get('/', (req, res) => {
   res.redirect('/urls');
@@ -111,7 +139,6 @@ app.get('/urls', (req, res) => {
     user,
     urls: urlsForUser(user),
   };
-  console.log(templateVars.urls);
   res.render('urls_index', templateVars);
 });
 
@@ -274,47 +301,7 @@ app.post('/register', (req, res) => {
 });
 
 
-//Listen
+//Server Listen
 app.listen(PORT, () => {
   console.log(`Tinyapp listening on port ${PORT}!`);
 });
-
-//Functions
-const generateRandomString = function(len) {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let randStr = '';
-  for (let i = 0; i < len; i ++) {
-    const randNum = randomBetween(0, chars.length - 1);
-    randStr += chars[randNum];
-  }
-  return randStr;
-};
-
-const randomBetween = function(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-};
-
-const getUserByEmail = function(email) {
-  for (const id in users) {
-    if (users[id].email === email) {
-      return users[id];
-    }
-  }
-  return null;
-};
-
-const urlsForUser = function(user) {
-  const userURLs = {};
-  if (!user) {
-    return null;
-  }
-  for (const urlId in urlDatabase) {
-    if (urlDatabase[urlId].userId === user.id) {
-      userURLs[urlId] = urlDatabase[urlId];
-    }
-  }
-  if (Object.keys(userURLs).length === 0) {
-    return null;
-  }
-  return userURLs;
-};
