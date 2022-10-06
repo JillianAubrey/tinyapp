@@ -99,6 +99,19 @@ app.get('/admin', (req, res) => {
   res.render('admin_index', templateVars);
 });
 
+app.get('/admin/urls', (req, res) => {
+  const user = users[req.session.user_id];
+  if (!user || !user.admin) {
+    return res.status(401).render('401');
+  }
+  const {addURL, ...urls} = urlDatabase;
+  const templateVars = {
+    user,
+    urls,
+  };
+  res.render('urls_index', templateVars);
+});
+
 //any user
 app.get('/', (req, res) => {
   res.redirect('/urls');
@@ -139,7 +152,7 @@ app.get('/urls/:id', (req, res) => {
     return res.status(404).render('404');
   }
   const user = users[req.session.user_id];
-  if (!user || url.userId !== user.id) {
+  if (!user || url.userId !== user.id && !user.admin) {
     return res.status(401).render('401');
   }
   const visitorId = req.session.visitor_id;
@@ -264,7 +277,7 @@ app.put('/urls/:id', (req, res) => {
   if (!user) {
     res.status(401).end('Cannot edit urls without being logged in.\n');
   }
-  if (url.userId !== user.id) {
+  if (url.userId !== user.id && !user.admin) {
     res.status(401).end('Cannot edit urls created by other accounts.\n');
   }
   urlDatabase[id].longURL = req.body.newURL;
@@ -282,7 +295,7 @@ app.delete('/urls/:id', (req, res) => {
   if (!user) {
     res.status(401).end('Cannot edit urls without being logged in.\n');
   }
-  if (url.userId !== user.id) {
+  if (url.userId !== user.id && !user.admin) {
     res.status(401).end('Cannot edit urls created by other accounts.\n');
   }
   delete urlDatabase[id];
