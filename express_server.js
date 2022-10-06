@@ -18,6 +18,35 @@ app.use(cookieSession({
 }));
 app.set('view engine', 'ejs');
 
+class URL {
+  constructor(longURL, userId) {
+    this.id = generateRandomString(6);
+    this.longURL = longURL;
+    this.userId = userId;
+    timesUsed = 0;
+    uniqueVisitors = 0;
+    visits = [];
+  }
+  addVisit(visitorId) {
+    this.timesUsed++;
+    if (this.firstTimeVisitor(visitorId)){
+      uniqueVisitors++;
+    }
+    this.visits.push({
+      visitorId,
+      timeStamp: Date.now(),
+    })
+  }
+  firstTimeVisitor(visitorId) {
+    for (const visit of this.visits) {
+      if (visitorId === visit.visitorId) {
+        return false;
+      }
+    }
+    return true;
+  }
+}
+
 const urlDatabase = {
   'b2xVn2': {
     id: 'b2xVn2',
