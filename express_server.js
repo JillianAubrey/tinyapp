@@ -72,7 +72,7 @@ class URL {
   addVisit(visitorId) {
     this.timesVisited++;
     if (this.firstTimeVisitor(visitorId)){
-      uniqueVisitors++;
+      this.uniqueVisitors++;
     }
     this.visits.push({
       visitorId,
@@ -170,13 +170,17 @@ app.get('/urls/:id', (req, res) => {
 });
 
 app.get('/u/:id', (req, res) => {
-  req.session.visitor_id = "some value";
   const url = urlDatabase[req.params.id];
   if (!url) {
     return res.status(404).render('404');
   }
+  let visitor_id = users[req.session.visitor_id];
+  if (!visitor_id) {
+    visitor_id = generateRandomString(6);
+    req.session.visitor_id = visitor_id ;
+  }
   const { longURL } = url;
-  url.timesUsed ++;
+  url.addVisit(visitor_id);
   res.redirect(longURL);
 });
 
