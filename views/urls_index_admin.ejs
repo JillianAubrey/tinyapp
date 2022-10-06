@@ -12,16 +12,12 @@
   <body>
     <%- include('partials/_header') %>
     <main style="margin: 1em;">
-      <h3>My URLs</h3>
-      <% if (!user) { %>
-        <p>You'll need to <a href="/login">login</a> or <a href="/register">create an account</a> to make urls!</p>
-      <% } else if (!urls) { %>
-        <p>You'll need to <a href="/urls/new">create a url</a> to see something here!</p>
-      <% } else { %>
+      <h3>All URLs</h3>
         <table class="table">
           <thead>
             <tr>
               <th scope="col">Short URL ID</th>
+              <th scope="col">Owner userID</th>
               <th scope="col">Long URL</th>
               <th scope="col">Times Visited</th>
               <th scope="col">Unique Visitors</th>
@@ -33,6 +29,7 @@
             <% for (let id in urls) { %>
               <tr>
                 <td><a href="/urls/<%= id %>"><%= id %></a></td>
+                <td><%= urls[id].userId %></td>
                 <td><a href="<%= urls[id].longURL %>"><%= urls[id].longURL %></a></td>
                 <td><%= urls[id].timesVisited %></td>
                 <td><%= urls[id].uniqueVisitors %></td>
@@ -42,7 +39,6 @@
             <% } %>
           </tbody>
         </table>
-      <% } %>
     </main>
 
     <%- include('partials/_bootstrapJS') %>

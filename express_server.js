@@ -109,7 +109,7 @@ app.get('/admin/urls', (req, res) => {
     user,
     urls,
   };
-  res.render('urls_index', templateVars);
+  res.render('urls_index_admin', templateVars);
 });
 
 app.get('/admin/users', (req, res) => {
