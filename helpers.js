@@ -19,13 +19,13 @@ const getUserByEmail = function(email, database) {
       return database[id];
     }
   }
-  return null;
+  return;
 };
 
 const urlsForUser = function(user, database) {
   const userURLs = {};
   if (!user) {
-    return null;
+    return;
   }
   for (const urlId in database) {
     if (database[urlId].userId === user.id) {
@@ -33,7 +33,7 @@ const urlsForUser = function(user, database) {
     }
   }
   if (Object.keys(userURLs).length === 0) {
-    return null;
+    return;
   }
   return userURLs;
 };
