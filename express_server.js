@@ -51,7 +51,12 @@ app.get('/', (req, res) => {
 });
 
 app.get('/urls.json', (req, res) => {
-  res.json(urlDatabase);
+  const user = users[req.cookies['user_id']];
+  if (!user) {
+    return res.status(401).end('Must be logged in to view urls.');
+  }
+  const urls = urlsForUser(user);
+  res.json(urls);
 });
 
 app.get('/urls', (req, res) => {
