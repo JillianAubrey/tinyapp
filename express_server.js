@@ -93,9 +93,10 @@ app.get('/urls.json', (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
-  const user = users[req.session.user_id];
+  const user = users[req.session.user_id]
+  const userEmail = (user ? user.email : '');
   const templateVars = {
-    user,
+    userEmail,
     urls: urlsForUser(user, urlDatabase),
   };
   res.render('urls_index', templateVars);
@@ -106,8 +107,9 @@ app.get('/urls/new', (req, res) => {
   if (!user) {
     return res.redirect('/login');
   }
+  const userEmail = user.email;
   const templateVars = {
-    user,
+    userEmail,
   };
   res.render('urls_new', templateVars);
 });
@@ -121,9 +123,10 @@ app.get('/urls/:id', (req, res) => {
   if (!user || urlObj.userId !== user.id) {
     return res.status(401).render('401');
   }
+  const userEmail = user.email;
   const templateVars = {
     urlObj,
-    user: users[req.session.user_id],
+    userEmail,
   };
   res.render('urls_show', templateVars);
 });
@@ -144,24 +147,26 @@ app.get('/u/:id', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  const templateVars = {
-    user: users[req.session.user_id],
-    errorMessage: '',
-  };
-  if (templateVars.user) {
+  const user = users[req.session.user_id];
+  if (user) {
     return res.redirect('/');
   }
+  const templateVars = {
+    userEmail: '',
+    errorMessage: '',
+  };
   res.render('register', templateVars);
 });
 
 app.get('/login', (req, res) => {
-  const templateVars = {
-    user: users[req.session.user_id],
-    errorMessage: '',
-  };
-  if (templateVars.user) {
+  const user = users[req.session.user_id];
+  if (user) {
     return res.redirect('/');
   }
+  const templateVars = {
+    userEmail: '',
+    errorMessage: '',
+  };
   res.render('login', templateVars);
 });
 
@@ -217,7 +222,7 @@ app.post('/login', (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     const templateVars = {
-      user: null,
+      userEmail: '',
       errorMessage: 'Please provide an email and password',
     };
     return res.status(400).render('login', templateVars);
@@ -225,7 +230,7 @@ app.post('/login', (req, res) => {
   const user = getUserByEmail(email, users);
   if (!user || !bcrypt.compareSync(password, user.passwordHash)) {
     const templateVars = {
-      user: null,
+      userEmail: '',
       errorMessage: 'That email and password combination did not match any accounts',
     };
     return res.status(400).render('login', templateVars);
@@ -243,14 +248,14 @@ app.post('/register', (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     const templateVars = {
-      user: null,
+      userEmail: '',
       errorMessage: 'Please provide an email and password',
     };
     return res.status(400).render('register', templateVars);
   }
   if (getUserByEmail(email, users)) {
     const templateVars = {
-      user: null,
+      userEmail: '',
       errorMessage: 'There is already an account with that email address',
     };
     return res.status(400).render('register', templateVars);
@@ -260,7 +265,6 @@ app.post('/register', (req, res) => {
   users[id] =  { id, email, passwordHash };
   req.session.user_id = id;
   res.redirect('/urls');
-  console.log(users);
 });
 
 
