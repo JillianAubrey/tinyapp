@@ -23,9 +23,9 @@ class URL {
     this.id = generateRandomString(6);
     this.longURL = longURL;
     this.userId = userId;
-    timesUsed = 0;
-    uniqueVisitors = 0;
-    visits = [];
+    this.timesUsed = 0;
+    this.uniqueVisitors = 0;
+    this.visits = [];
   }
   addVisit(visitorId) {
     this.timesUsed++;
@@ -68,6 +68,11 @@ const urlDatabase = {
     userId: "sNgHlb",
     timesUsed: 0,
     visits: [],
+  },
+  addURL: function(longURL, userId) {
+    const newURL = new URL(longURL, userId);
+    this[newURL.id] = newURL;
+    return newURL;
   }
 };
 
@@ -180,15 +185,8 @@ app.post('/urls', (req, res) => {
   if (!user) {
     return res.status(401).end('Cannot generate shortened URL without being logged in.\n');
   }
-  const id = generateRandomString(6);
-  urlDatabase[id] = {
-    id,
-    longURL: req.body.longURL,
-    userId: user.id,
-    timesUsed: 0,
-    visits: [],
-  };
-  res.redirect(`/urls/${id}`);
+  const url = urlDatabase.addURL(req.body.longURL, user.id)
+  res.redirect(`/urls/${url.id}`);
 });
 
 app.post('/urls/:id/delete', (req, res) => {
