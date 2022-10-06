@@ -67,16 +67,22 @@ urlDatabase.addURL('https://www.tsn.ca', 'xjJM8f');
 
 ///Users database//////////
 const users = {
-  xjJM8f: {
+  'xjJM8f': {
     id: 'xjJM8f',
     email: 'user1@exampledomain.com',
     passwordHash: bcrypt.hashSync('test-password-1', 10),
   },
-  sNgHlb: {
+  'sNgHlb': {
     id: 'sNgHlb',
     email: 'user2@exampledomain.com',
     passwordHash: bcrypt.hashSync('test-password-2', 10),
   },
+  'cwgK9w': {
+    id: 'cwgK9w',
+    email: 'admin@tinyapp.com',
+    passwordHash: bcrypt.hashSync('admin-password', 10),
+    admin: true,
+  }
 };
 
 //HTTP routes /////////////////////
