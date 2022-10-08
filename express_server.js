@@ -9,6 +9,7 @@ const { generateRandomString, getUserByEmail, urlsForUser } = require('./helpers
 const urlDatabase = require('./url_database');
 const users = require('./user_database');
 
+//Middleware
 app.use(methodOverride('_method'));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieSession({
@@ -189,7 +190,7 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
-  req.session.user_id = null;
+  req.session = null;
   res.redirect('/urls');
 });
 
